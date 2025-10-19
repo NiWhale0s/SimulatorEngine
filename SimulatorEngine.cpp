@@ -16,5 +16,6 @@ int main() {
 	cout << "Enter temperature enviroment: ";
 	cin >> temp;
 	BasicDVS engine (10, 20, 0, 110, 0.01, 0.0001, 0.1, temp);
-	overheatingTest(engine, M, V);
+	//overheatingTest(engine, M, V);
+	maximumPowerTest(engine, M, V);
 }

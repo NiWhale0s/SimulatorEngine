@@ -15,8 +15,6 @@ double Engine::getI()
 	return I;
 }
 
-
-
 double Engine::getTEngine()
 {
 	return T_engine;
