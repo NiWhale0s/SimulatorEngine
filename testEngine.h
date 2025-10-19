@@ -3,14 +3,17 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <stdexcept>
+
 #include "Engine.h"
 #include "BasicDVS.h"
 
-const double epsilon = 1e-4;
+const double epsilon = 1e-3;
 
 using namespace std;
 
 double linearInterpolation(double currentV, vector<double>M, vector<double> V) {
+	
 	if (currentV <= V[0]) return M[0];
 
 	if (currentV >= V.back()) return M.back();
@@ -29,18 +32,27 @@ double linearInterpolation(double currentV, vector<double>M, vector<double> V) {
 }
 
 void overheatingTest(Engine& engine, vector<double> M, vector <double> V) {
-	cout << "Test Overheating: " << endl;
 	
+	if (M.empty() || V.empty()) {
+		throw std::invalid_argument("M and V must not be empty");
+	}
+	if (M.size() != V.size()) {
+		throw std::invalid_argument("M and V must have the same size");
+	}
+
+	
+	cout << "Test Overheating: " << endl;
+
 	double a = 0;
 	double time = 0.0;
 	double deltaT = 0.1;
 	double currentM;
 	double currentV = V[0];
-	
+	bool overheat = true;
 	engine.startEngine();
 	cout << "Start engine!" << endl;
 	
-	while (engine.getTEngine() < engine.getTOverhate()) {
+	while (engine.getTEngine() < engine.getTOverhate() && (engine.getTOverhate() - engine.getTEngine()) > epsilon)  {
 		currentM = linearInterpolation(currentV, M, V);
 		a = currentM / engine.getI();
 		currentV = currentV + a * deltaT;
@@ -54,20 +66,30 @@ void overheatingTest(Engine& engine, vector<double> M, vector <double> V) {
 		double currentT = engine.getTEngine() + tHot + tCold;
 
 		engine.setTEngine(currentT);
-		cout << "current engine t = " << engine.getTEngine() << endl;
 		
-		if (time > 1000) { 
-			cout << "Temperature stabilized at " << engine.getTEngine() << endl;
+		if (fabs(V.back() - currentV) < epsilon) {
+			overheat = false;
+			cout << "Engine is not overheat! Temperature stabilized at " << engine.getTEngine() << endl;
 			break;
 		}
+		
 	}
-	
+
 	engine.stopEngine();
-	cout << "The test was completed successfully!" << " The overheating temperature was reached in " << time << " sec" << endl;
+	cout << "Stop engine!" << endl;
+	if (overheat) cout << "The test was completed successfully!" << " The overheating temperature was reached in " << time << " sec" << endl;
 	return;
 }
 
 void maximumPowerTest(Engine& engine, vector <double> M, vector <double> V) {
+	
+	if (M.empty() || V.empty()) {
+		throw std::invalid_argument("M and V must not be empty");
+	}
+	if (M.size() != V.size()) {
+		throw std::invalid_argument("M and V must have the same size");
+	}
+	
 	cout << "Test maximum power: " << endl;
 	
 	double a = 0;
@@ -100,6 +122,7 @@ void maximumPowerTest(Engine& engine, vector <double> M, vector <double> V) {
 		if (currentV > V.back()) currentM = 0;
 	}
 	engine.stopEngine();
+	cout << "Stop engine!" << endl;
 	cout << endl << "The test was completed successfully!" << " The maximum power was reached in " << time << " sec, and it is equal at " << maxN << " the speed of the crankshaft " << V_maxN << endl;
 	return;
 }
