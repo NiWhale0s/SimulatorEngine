@@ -10,27 +10,44 @@ double Engine::getV()
 	return V;
 }
 
-double Engine::gettime()
+double Engine::getI()
 {
-	return time;
+	return I;
 }
 
-double Engine::get_a()
-{
-	return a;
-}
 
-double Engine::getN()
-{
-	return N;
-}
 
 double Engine::getTEngine()
 {
 	return T_engine;
 }
 
-void Engine::enginePower()
+double Engine::getTOverhate()
 {
-	N = M * V / 1000;
+	return T_overheat;
 }
+
+void Engine::setM(double M)
+{
+	this->M = M;
+}
+
+void Engine::setV(double V)
+{
+	this->V = V;
+}
+
+
+void Engine::setTEngine(double t)
+{
+	T_engine = t;
+}
+
+void Engine::setTOverhate(double t)
+{
+	T_overheat = t;
+}
+
+
+
+

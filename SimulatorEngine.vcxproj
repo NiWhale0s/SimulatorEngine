@@ -123,11 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicDVS.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="SimulatorEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicDVS.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="testEngine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
